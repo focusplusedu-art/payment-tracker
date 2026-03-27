@@ -2,56 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Payment Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Cloud Verified Payment Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { --primary: #1a73e8; --bg: #f8f9fa; --paid: #e8f5e9; --unpaid: #ffebee; }
+        :root { --primary: #1a73e8; --bg: #f8f9fa; --paid: #e8f5e9; --unpaid: #ffebee; --border: #444; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; padding: 10px; }
         
-        /* Login Screen */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 9999;
-        }
-        .login-box { background: white; padding: 35px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 280px; }
-        .login-box input { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 20px; }
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .login-box { background: white; padding: 35px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 280px; max-width: 90%; }
+        .login-box input { width: 90%; padding: 12px; margin-bottom: 15px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-size: 20px; box-sizing: border-box; }
         .login-box button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* Main App */
         #main-app { display: none; }
-        .container { background: white; padding: 20px; border-radius: 12px; max-width: 1200px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        .search-box input { padding: 12px; border: 2px solid var(--primary); border-radius: 8px; width: 250px; }
+        .container { background: white; padding: 20px; border-radius: 12px; max-width: 1300px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
-        .table-wrapper { overflow-x: auto; border: 1px solid #444; border-radius: 8px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #bbdefb; }
+        .search-box { flex: 1; min-width: 200px; }
+        .search-box input { padding: 12px; border: 2px solid var(--primary); border-radius: 8px; width: 100%; font-size: 14px; box-sizing: border-box; outline: none; }
+        
+        .quick-add { display: flex; align-items: center; gap: 10px; }
+        .quick-add label { font-weight: bold; color: #1a73e8; white-space: nowrap; }
+        .quick-add input { padding: 12px; border: 2px solid #4caf50; border-radius: 8px; width: 120px; font-weight: bold; font-size: 15px; text-align: center; outline: none; }
+        
+        .summary-box { margin-bottom: 20px; padding: 15px; background: #333; color: white; border-radius: 8px; display: flex; justify-content: space-around; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px; }
+        
+        .table-wrapper { overflow-x: auto; border: 1.5px solid var(--border); border-radius: 8px; -webkit-overflow-scrolling: touch; background: white; }
         table { width: 100%; border-collapse: collapse; min-width: 1000px; table-layout: fixed; }
-        th, td { border: 1px solid #444; padding: 10px; text-align: center; font-size: 14px; }
+        th, td { border: 1px solid var(--border); padding: 10px; text-align: center; font-size: 14px; }
         th { background: #444; color: white; text-transform: uppercase; }
         
         .row-paid { background-color: var(--paid) !important; }
         .row-unpaid { background-color: var(--unpaid) !important; }
         
-        input.t-in { width: 90%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 14px; background: white; }
-        .sn-cell { font-weight: bold; color: #d32f2f; }
+        input.t-in { width: 90%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 14px; background: white; box-sizing: border-box; outline: none; }
+        .sn-cell { font-weight: bold; color: #d32f2f; font-size: 15px; }
         input[type="checkbox"] { transform: scale(1.4); cursor: pointer; }
 
-        .summary-box { margin: 20px 0; padding: 20px; background: #333; color: white; border-radius: 8px; display: flex; justify-content: space-around; font-weight: bold; }
-        
         .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        .btn { padding: 12px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; font-size: 14px; }
+        .btn { padding: 12px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; font-size: 14px; transition: 0.2s; }
+        .btn:active { transform: scale(0.95); }
         .btn-row { background: #2e7d32; }
         .btn-month { background: #ff9800; color: #000; }
         .btn-pdf { background: #c62828; }
         .btn-reset { background: #546e7a; }
-        .btn-logout { background: #212121; }
+        .btn-logout { background: #212121; padding: 12px 20px; }
 
-        /* PDF Styles */
-        .pdf-mode .controls, .pdf-mode .top-bar { display: none !important; }
-        .pdf-mode table { border: 2.5px solid black !important; }
-        .pdf-mode th, .pdf-mode td { border: 1.5px solid black !important; color: black !important; background: white !important; font-weight: bold !important; }
-        .pdf-mode input { border: none !important; }
-        .pdf-mode .pdf-tick::after { content: '✔'; font-weight: bold; font-size: 16px; }
+        /* ========================================= */
+        /* MOBILE PHONE RESPONSIVENESS (ෆෝන් වලට) */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .container { padding: 15px 10px; }
+            .top-bar { flex-direction: column; align-items: stretch; text-align: center; gap: 10px; padding: 12px; }
+            
+            .search-box { width: 100%; }
+            
+            .quick-add { flex-direction: row; justify-content: space-between; width: 100%; }
+            .quick-add input { flex: 1; width: auto; margin-left: 10px; }
+            
+            .btn-logout, .btn-pdf { width: 100%; margin-top: 5px; }
+            
+            .controls { flex-direction: column; gap: 8px; }
+            .btn { width: 100%; padding: 15px; font-size: 15px; } /* ලොකු Buttons */
+            
+            .summary-box { flex-direction: column; text-align: center; font-size: 1.1rem; }
+            
+            /* Swipe Hint for mobile table */
+            .table-wrapper { border-right: 3px solid rgba(26, 115, 232, 0.5); position: relative; }
+            .swipe-hint { display: block; text-align: center; font-size: 12px; color: #1a73e8; margin-top: 5px; font-weight: bold; }
+        }
+        
+        /* Desktop Swipe Hint (Hidden) */
+        @media (min-width: 769px) { .swipe-hint { display: none; } }
+
+        /* ========================================= */
+        /* PDF PRINT MODE STYLING (A4 BLACK & WHITE) */
+        /* ========================================= */
+        .pdf-mode { padding: 20px 10px; background: white; }
+        .pdf-mode .top-bar, .pdf-mode .controls, .pdf-mode .swipe-hint { display: none !important; } 
+        .pdf-mode h2 { color: black !important; text-transform: uppercase; text-align: center; margin-bottom: 5px; font-size: 22px; }
+        .pdf-mode .summary-box { background: white !important; color: black !important; border: 2px solid black; padding: 10px; box-shadow: none; border-radius: 0; margin-bottom: 15px; font-size: 14px; flex-direction: row !important; }
+        .pdf-mode table { border: 2px solid black !important; min-width: 100%; }
+        .pdf-mode th { background: white !important; color: black !important; border: 1.5px solid black !important; font-size: 12px; padding: 6px; }
+        .pdf-mode td { border: 1px solid black !important; color: black !important; background: white !important; padding: 4px 2px; }
+        .pdf-mode tr { page-break-inside: avoid; } 
+        .pdf-mode .sn-cell { color: black !important; font-size: 12px; }
+        .pdf-mode input.t-in { border: none !important; background: transparent !important; color: black !important; font-weight: bold; font-size: 12px; width: 100%; outline: none; box-shadow: none; }
+        .pdf-mode .pdf-tick::after { content: '✔'; font-weight: bold; font-size: 14px; color: black; display: block; }
         .pdf-mode input[type="checkbox"] { display: none !important; }
     </style>
 </head>
@@ -67,156 +105,197 @@
 
 <div id="main-app">
     <div class="container" id="printable-area">
+        
         <div class="top-bar">
-            <div class="search-box"><input type="text" id="searchInput" placeholder="Search..." oninput="render()"></div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search Name, Reg No or SN..." oninput="render()">
+            </div>
+            
+            <div class="quick-add">
+                <label>Quick Add:</label>
+                <input type="text" id="quickAddInput" value="23EE0" 
+                    oninput="if(!this.value.startsWith('23EE0')) this.value='23EE0';" 
+                    onkeydown="handleQuickAdd(event)"
+                    onclick="moveCursorToEnd(this)">
+            </div>
+
+            <button class="btn btn-pdf" onclick="generatePDF()">🖨️ Download PDF</button>
             <button class="btn btn-logout" onclick="location.reload()">Logout</button>
         </div>
 
-        <h2 style="text-align:center; color:var(--primary); margin:0 0 20px 0;">Payment Tracker</h2>
+        <h2 style="text-align:center; color:var(--primary); margin:0 0 10px 0;" id="reportTitle">Student Payment Tracker</h2>
+
+        <div class="summary-box" id="reportSummary">
+            <div>Total Paid Students: <span id="totalStudents">0</span></div>
+            <div>Total Collection: LKR <span id="totalCash">0</span></div>
+        </div>
 
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr id="headerRow">
-                        <th style="width:50px">No.</th><th style="width:60px">SN</th><th style="width:150px">Reg No.</th><th>Name</th><th style="width:100px">Amount</th>
+                        <th style="width:40px">No.</th><th style="width:40px">SN</th><th style="width:130px">Reg No.</th><th>Name</th><th style="width:80px">Amount</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
-
-        <div class="summary-box">
-            <div>Paid Count: <span id="totalStudents">0</span></div>
-            <div>Total: LKR <span id="totalCash">0</span></div>
-        </div>
+        <span class="swipe-hint">👉 Swipe table left/right to see months</span>
 
         <div class="controls">
             <button class="btn btn-row" onclick="addNewRow()">+ Add Row</button>
             <button class="btn btn-month" onclick="addNewMonth()">+ Add Month</button>
-            <button class="btn btn-pdf" onclick="generatePDF()">Download PDF</button>
-            <button class="btn btn-reset" onclick="secureReset()">Reset All</button>
+            <button class="btn btn-reset" onclick="secureReset()">Reset All Data</button>
         </div>
     </div>
 </div>
 
 <script>
     const PASS = "2003";
-    let months = JSON.parse(localStorage.getItem('m_v_smooth')) || ["March"];
-    let students = JSON.parse(localStorage.getItem('s_v_smooth')) || [];
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const API_URL = "https://script.google.com/macros/s/AKfycbx7OegRBnSYlprMznKNfLAddVM9obgbznreqCOwFIS8j4X3LfdOH8i-qsVeMIm72sI/exec";
+    
+    const db = {
+        "316": "G.A.K.Perera (GL)", "346": "W.A.S.P.Wickramasinghe", "306": "S.K.K.A.U.Madushan", "320": "S.P.K.M.Premasiri",
+        "305": "R.A.Madushan", "268": "K.P.M.D.Darmasiri (GL)", "283": "H.M. A.P.Gunawardana", "293": "H.S.Kalhara",
+        "311": "E.Narmithan", "269": "A .G. A. P. Dayananda", "270": "M.A.A.K Dilshan (GL)", "258": "A.M.G.M Attanayaka",
+        "259": "B.P.G.N.T Balasooriya", "282": "N.D.D.N.S Gunathilake", "348": "P.A.C.P Wijesinghe", "285": "W.P.M.T.Gunarathna (GL)",
+        "338": "T.S.Subasinghe", "287": "H.M.C.M. Herath", "294": "Y.G.T.N Kalhara", "301": "G.V.P.Lakshan",
+        "289": "H.P.S.N.Hewapathirana", "290": "D.R.L.Ilangarathna", "291": "K.W.N.N.Jayashantha (GL)", "266": "W.G.M.Chathuranga",
+        "272": "P.H.G.P.N.Dissanayaka", "254": "T.A.M.I.B.Adikaram", "265": "M.G.D.Chandrawansa", "280": "U.M.S.N.Gunarathna (GL)",
+        "281": "H.K.E.P.Gunarathna", "253": "A.M.U.P.D.Adasuriya", "277": "S.A.M.R.Fernando", "251": "A.A.D.D.N.Abeydeera",
+        "276": "N.T.M.Fernando (GL)", "267": "K.A.D.Dhananjaya", "264": "P.P.Bhashana", "256": "S.M.S.Anagiyadda",
+        "257": "V.P.V.Ariyarathna", "262": "K.W.A.M.Bandara (GL)", "260": "N.G.C.D.Balasooriya", "273": "D.M.G.N.N.Dissanayake",
+        "274": "D.M.H.K.Dissanayake", "331": "K. J. Sabith Hussain (GL)", "255": "M U.M. Amhar", "275": "E.M. J.W.Edirisooriya",
+        "286": "B.M.Hassan", "310": "W.M.P.L.Nanayakkara (GL)", "309": "M.M.K.Munasinghe", "330": "S.M.S.N.Rathnayake",
+        "340": "H.D.O.Tharinda", "298": "K.W.D.C.I.Koswaththa", "345": "S.U.A.Wikramanayake (GL)", "326": "W.N.Rasintha",
+        "335": "J.K.T.P.Sarvajith", "327": "R.M.K.V.Rathnayake", "332": "S.D.S.W.Samarathunga", "339": "S.A.H.K.Suduwella (GL)",
+        "302": "K.V.K.Madhubhath", "336": "M.K.D.J.Savinda", "337": "S.M.P.T.Subasinghe", "344": "G.H.T.Wickramage",
+        "317": "H.S.T.Perera (GL)", "329": "R.M.P.T.Rathnayake", "292": "M.K.P.N.Jayaweera", "347": "T.G.B.A.Wijerathne",
+        "312": "A.H.T.Navindu (GL)", "325": "R.A.R.H.Ranasinghe", "343": "W.M.S.S.Weerakoon", "324": "A.G.N.D.Ranasinghe",
+        "297": "S.V.L.Kodithuwakku (GL)", "278": "W.I.U.Fernando", "296": "K.T.R.Kalubowila", "295": "K.A.N.K.Kalurachchi",
+        "299": "K.H.Kulathunga", "322": "E.A.L.D.Priyashantha (GL)", "307": "M.K.Malshan", "314": "I.W.R.Pasindu",
+        "323": "H.K.S.Pushpakumara", "341": "U.A.I.H.Uggalla", "304": "R.T.A.N.Madhusanka (GL)", "313": "I.K.T.Nishshanka",
+        "319": "G.P.S.Premakumara", "349": "R.D.M.H.Wijethilake", "350": "Y.S.D.Yodhasinghe", "263": "R.M.Y.R.Bandara (GL)",
+        "284": "S.G.K.B.Gunawardhane", "261": "A.I.Bandara", "328": "R.M.N.K Rathnayake", "318": "T.W.K.D. Perera (GL)",
+        "321": "M.V.A. Priyamal", "288": "H.M.N.L. Herath", "315": "V.A.S.K. Peiris"
+    };
+
+    let students = [];
+    let months = [];
 
     function verify() {
         if (document.getElementById('passInput').value === PASS) {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
-            if(students.length === 0) addNewRow();
-            render();
+            
+            document.getElementById('tableBody').innerHTML = `<tr><td colspan="100%" style="padding:40px; font-size:16px; color:#1a73e8; font-weight:bold;">☁️ Loading Data...</td></tr>`;
+
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.students && data.students.length > 0) {
+                        students = data.students;
+                        months = data.months;
+                    } else {
+                        let localS = JSON.parse(localStorage.getItem('s_v_cloud_backup')) || [];
+                        if (localS.length > 0) {
+                            students = localS;
+                            months = JSON.parse(localStorage.getItem('m_v_cloud_backup')) || ["March"];
+                            save(); 
+                        } else { addNewRow(); }
+                    }
+                    render();
+                    setTimeout(() => { document.getElementById('quickAddInput').focus(); moveCursorToEnd(document.getElementById('quickAddInput')); }, 100);
+                })
+                .catch(err => {
+                    students = JSON.parse(localStorage.getItem('s_v_cloud_backup')) || [];
+                    months = JSON.parse(localStorage.getItem('m_v_cloud_backup')) || ["March"];
+                    if(students.length === 0) addNewRow();
+                    render();
+                });
         } else { alert("Incorrect PIN!"); }
+    }
+
+    function save() { 
+        localStorage.setItem('s_v_cloud_backup', JSON.stringify(students)); 
+        localStorage.setItem('m_v_cloud_backup', JSON.stringify(months)); 
+        fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ students: students, months: months }) }).catch(e=>{});
+    }
+
+    function moveCursorToEnd(el) { if (typeof el.selectionStart == "number") { el.selectionStart = el.selectionEnd = el.value.length; } }
+
+    function handleQuickAdd(e) {
+        let el = e.target;
+        if (e.key === "Enter") {
+            let val = el.value; let suffix = val.replace("23EE0", "");
+            if (suffix.length === 3) {
+                if (students.some(s => s.reg === val)) { alert("This Registration Number has already been added!"); el.value = "23EE0"; moveCursorToEnd(el); return; }
+                let sn = parseInt(suffix) - 250; let name = db[suffix] ? db[suffix] : "Student Not Found";
+                let emptyIndex = students.findIndex(s => s.reg === "23EE0" || s.reg === "");
+                if (emptyIndex !== -1) { students[emptyIndex].reg = val; students[emptyIndex].sn = sn; students[emptyIndex].name = name; } 
+                else { students.push({ reg: val, sn: sn, name: name, amount: 100, payments: new Array(months.length).fill(false) }); }
+                save(); document.getElementById('searchInput').value = ""; render(); el.value = "23EE0"; moveCursorToEnd(el);
+                setTimeout(() => { const rows = document.querySelectorAll('#tableBody tr'); let targetRow = emptyIndex !== -1 ? emptyIndex : rows.length - 1; if (rows[targetRow]) rows[targetRow].querySelector('input[type="checkbox"]').focus(); }, 50);
+            } else { alert("Please enter a valid 3-digit number!"); }
+        }
     }
 
     function render() {
         const query = document.getElementById('searchInput').value.toLowerCase();
         const header = document.getElementById('headerRow');
-        header.innerHTML = `<th style="width:50px">No.</th><th style="width:60px">SN</th><th style="width:150px">Reg No.</th><th>Name</th><th style="width:100px">Amount</th>`;
-        months.forEach(m => header.innerHTML += `<th style="width:100px">${m}</th>`);
+        header.innerHTML = `<th style="width:40px">No.</th><th style="width:40px">SN</th><th style="width:130px">Reg No.</th><th>Name</th><th style="width:80px">Amount</th>`;
+        months.forEach(m => header.innerHTML += `<th style="width:80px">${m}</th>`);
 
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = "";
-        let cash = 0, paid = 0;
-
+        const tbody = document.getElementById('tableBody'); tbody.innerHTML = ""; let cash = 0, paid = 0;
         students.forEach((s, idx) => {
-            if (s.name.toLowerCase().includes(query) || s.reg.toLowerCase().includes(query)) {
-                let isPaid = s.payments.some(p => p === true);
-                if(isPaid) paid++;
-                s.payments.forEach(p => { if(p) cash += s.amount; });
-
-                const row = document.createElement('tr');
-                row.className = isPaid ? "row-paid" : "row-unpaid";
-                row.innerHTML = `
-                    <td>${idx + 1}</td>
-                    <td class="sn-cell">${s.sn || ''}</td>
+            if (s.name.toLowerCase().includes(query) || s.reg.toLowerCase().includes(query) || (s.sn && s.sn.toString().includes(query))) {
+                let isPaid = s.payments.some(p => p === true); if(isPaid) paid++; s.payments.forEach(p => { if(p) cash += s.amount; });
+                const row = document.createElement('tr'); row.className = isPaid ? "row-paid" : "row-unpaid";
+                row.innerHTML = `<td>${idx + 1}</td><td class="sn-cell">${s.sn || ''}</td>
                     <td><input type="text" class="t-in r-in" value="${s.reg}" oninput="handleReg(${idx}, this.value)" onkeydown="nav(event, ${idx}, 'reg')"></td>
                     <td><input type="text" class="t-in n-in" value="${s.name}" oninput="update(${idx}, 'name', this.value)" onkeydown="nav(event, ${idx}, 'name')"></td>
-                    <td><input type="number" class="t-in" value="${s.amount}" oninput="update(${idx}, 'amount', this.value)" onkeydown="nav(event, ${idx}, 'amt')"></td>
-                `;
-                months.forEach((m, mIdx) => {
-                    const tick = s.payments[mIdx] ? 'pdf-tick' : '';
-                    row.innerHTML += `<td class="${tick}"><input type="checkbox" ${s.payments[mIdx] ? 'checked' : ''} onclick="toggle(${idx}, ${mIdx})"></td>`;
-                });
+                    <td><input type="number" class="t-in a-in" value="${s.amount}" oninput="update(${idx}, 'amount', this.value)" onkeydown="nav(event, ${idx}, 'amt')"></td>`;
+                months.forEach((m, mIdx) => { const tick = s.payments[mIdx] ? 'pdf-tick' : ''; row.innerHTML += `<td class="${tick}"><input type="checkbox" ${s.payments[mIdx] ? 'checked' : ''} onclick="toggle(${idx}, ${mIdx})"></td>`; });
                 tbody.appendChild(row);
             }
         });
-        document.getElementById('totalStudents').innerText = paid;
-        document.getElementById('totalCash').innerText = cash.toLocaleString();
+        document.getElementById('totalStudents').innerText = paid; document.getElementById('totalCash').innerText = cash.toLocaleString();
     }
 
     function handleReg(idx, val) {
         if (!val.startsWith("23EE0")) val = "23EE0";
-        students[idx].reg = val;
-        let suffix = val.replace("23EE0", "");
-        if (suffix.length >= 3) {
-            students[idx].sn = parseInt(suffix.substring(0,3)) - 250;
-            save(); render();
-            // Jump to Name
-            const names = document.querySelectorAll('.n-in');
-            if(names[idx]) names[idx].focus();
-        } else {
-            students[idx].sn = "";
-            save(); 
-            // Update SN cell without re-rendering everything to keep cursor
-            document.querySelectorAll('.sn-cell')[idx].innerText = "";
-        }
+        if (students.some((s, i) => i !== idx && s.reg === val && val !== "23EE0")) { alert("This Registration Number has already been added!"); students[idx].reg = "23EE0"; students[idx].sn = ""; students[idx].name = ""; save(); render(); return; }
+        students[idx].reg = val; let suffix = val.replace("23EE0", "");
+        if (suffix.length === 3) { students[idx].sn = parseInt(suffix) - 250; students[idx].name = db[suffix] ? db[suffix] : "Student Not Found"; save(); render(); const rows = document.querySelectorAll('#tableBody tr'); if(rows[idx]) rows[idx].querySelector('input[type="checkbox"]').focus(); } 
+        else { students[idx].sn = ""; save(); document.getElementById('totalStudents').innerText = paid; document.getElementById('totalCash').innerText = cash.toLocaleString(); }
     }
 
-    function update(idx, f, v) { students[idx][f] = (f==='amount')?parseInt(v)||0:v; save(); updateSummary(); }
+    function update(idx, f, v) { students[idx][f] = (f==='amount')?parseInt(v)||0:v; save(); render(); }
     function toggle(sIdx, mIdx) { students[sIdx].payments[mIdx] = !students[sIdx].payments[mIdx]; save(); render(); }
-    function save() { localStorage.setItem('s_v_smooth', JSON.stringify(students)); localStorage.setItem('m_v_smooth', JSON.stringify(months)); }
 
-    function addNewRow() {
-        students.push({ reg: "23EE0", sn: "", name: "", amount: 100, payments: new Array(months.length).fill(false) });
-        save(); render();
-        setTimeout(() => {
-            const regs = document.querySelectorAll('.r-in');
-            const el = regs[regs.length - 1];
-            el.focus();
-            el.setSelectionRange(el.value.length, el.value.length); // Put cursor at end
-        }, 50);
-    }
-
-    function nav(e, idx, f) {
-        if (e.key === "Enter") {
-            const row = document.querySelectorAll('#tableBody tr')[idx];
-            if (f === 'reg') row.querySelector('.n-in').focus();
-            else if (f === 'name') row.querySelector('input[type="number"]').focus();
-            else addNewRow();
-        }
-    }
-
-    function addNewMonth() {
-        let last = months[months.length-1];
-        months.push(monthNames[(monthNames.indexOf(last)+1)%12]);
-        students.forEach(s => s.payments.push(false));
-        save(); render();
-    }
-
-    function updateSummary() {
-        let cash = 0, paid = 0;
-        students.forEach(s => {
-            if(s.payments.some(p => p === true)) paid++;
-            s.payments.forEach(p => { if(p) cash += s.amount; });
-        });
-        document.getElementById('totalStudents').innerText = paid;
-        document.getElementById('totalCash').innerText = cash.toLocaleString();
-    }
-
-    function secureReset() {
-        if (prompt("PIN:") === PASS) { localStorage.clear(); location.reload(); }
-    }
+    function addNewRow() { students.push({ reg: "23EE0", sn: "", name: "", amount: 100, payments: new Array(months.length).fill(false) }); save(); render(); setTimeout(() => { const regs = document.querySelectorAll('.r-in'); const el = regs[regs.length - 1]; el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 50); }
+    function nav(e, idx, f) { if (e.key === "Enter") { const row = document.querySelectorAll('#tableBody tr')[idx]; if (f === 'reg') row.querySelector('input[type="checkbox"]').focus(); else addNewRow(); } }
+    function addNewMonth() { let last = months[months.length-1]; months.push(monthNames[(monthNames.indexOf(last)+1)%12]); students.forEach(s => s.payments.push(false)); save(); render(); }
+    function secureReset() { if (prompt("PIN:") === PASS) { students = []; months = ["March"]; save(); localStorage.clear(); location.reload(); } }
 
     function generatePDF() {
         const el = document.getElementById('printable-area');
-        el.classList.add('pdf-mode');
-        html2pdf().set({ margin:0.3, filename:'Report.pdf', jsPDF:{orientation:'landscape'} }).from(el).save().then(()=>el.classList.remove('pdf-mode'));
+        el.classList.add('pdf-mode'); 
+        
+        let today = new Date();
+        let dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+        
+        var opt = {
+            margin:       [10, 10, 10, 10], 
+            filename:     'Payment_Report_' + dateString + '.pdf',
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2, useCORS: true }, 
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' } 
+        };
+
+        html2pdf().set(opt).from(el).save().then(() => {
+            el.classList.remove('pdf-mode'); 
+        });
     }
 </script>
 </body>
