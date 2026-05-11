@@ -3,92 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Cloud Verified Payment Tracker</title>
+    <title>Student Fund System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { --primary: #1a73e8; --bg: #f8f9fa; --paid: #e8f5e9; --unpaid: #ffebee; --border: #444; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; padding: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-        .login-box { background: white; padding: 35px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 280px; max-width: 90%; }
-        .login-box input { width: 90%; padding: 12px; margin-bottom: 15px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-size: 20px; box-sizing: border-box; }
-        .login-box button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        #main-app { display: none; }
-        .container { background: white; padding: 20px; border-radius: 12px; max-width: 1300px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #bbdefb; }
-        .search-box { flex: 1; min-width: 200px; }
-        .search-box input { padding: 12px; border: 2px solid var(--primary); border-radius: 8px; width: 100%; font-size: 14px; box-sizing: border-box; outline: none; }
-        
-        .quick-add { display: flex; align-items: center; gap: 10px; }
-        .quick-add label { font-weight: bold; color: #1a73e8; white-space: nowrap; }
-        .quick-add input { padding: 12px; border: 2px solid #4caf50; border-radius: 8px; width: 120px; font-weight: bold; font-size: 15px; text-align: center; outline: none; }
-        
-        .summary-box { margin-bottom: 20px; padding: 15px; background: #333; color: white; border-radius: 8px; display: flex; justify-content: space-around; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px; }
-        
-        .table-wrapper { overflow-x: auto; border: 1.5px solid var(--border); border-radius: 8px; -webkit-overflow-scrolling: touch; background: white; }
-        table { width: 100%; border-collapse: collapse; min-width: 1000px; table-layout: fixed; }
-        th, td { border: 1px solid var(--border); padding: 10px; text-align: center; font-size: 14px; }
-        th { background: #444; color: white; text-transform: uppercase; }
-        
-        .row-paid { background-color: var(--paid) !important; }
-        .row-unpaid { background-color: var(--unpaid) !important; }
-        
-        input.t-in { width: 90%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 14px; background: white; box-sizing: border-box; outline: none; }
-        .sn-cell { font-weight: bold; color: #d32f2f; font-size: 15px; }
-        input[type="checkbox"] { transform: scale(1.4); cursor: pointer; }
-
-        .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        .btn { padding: 12px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; font-size: 14px; transition: 0.2s; }
-        .btn:active { transform: scale(0.95); }
-        .btn-month { background: #ff9800; color: #000; }
-        .btn-month-remove { background: #e64a19; color: white; } /* අලුත් Remove බොත්තමේ පාට */
-        .btn-pdf { background: #c62828; }
-        .btn-reset { background: #546e7a; }
-        .btn-logout { background: #212121; padding: 12px 20px; }
-
-        /* ========================================= */
-        /* MOBILE PHONE RESPONSIVENESS */
-        /* ========================================= */
-        @media (max-width: 768px) {
-            body { padding: 5px; }
-            .container { padding: 15px 10px; }
-            .top-bar { flex-direction: column; align-items: stretch; text-align: center; gap: 10px; padding: 12px; }
-            
-            .search-box { width: 100%; }
-            
-            .quick-add { flex-direction: row; justify-content: space-between; width: 100%; }
-            .quick-add input { flex: 1; width: auto; margin-left: 10px; }
-            
-            .btn-logout, .btn-pdf { width: 100%; margin-top: 5px; }
-            
-            .controls { flex-direction: column; gap: 8px; }
-            .btn { width: 100%; padding: 15px; font-size: 15px; } 
-            
-            .summary-box { flex-direction: column; text-align: center; font-size: 1.1rem; }
-            
-            .table-wrapper { border-right: 3px solid rgba(26, 115, 232, 0.5); position: relative; }
-            .swipe-hint { display: block; text-align: center; font-size: 12px; color: #1a73e8; margin-top: 5px; font-weight: bold; }
+        :root { 
+            --primary: #3b82f6; 
+            --primary-hover: #2563eb;
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --bg: #0f172a; 
+            --surface: rgba(30, 41, 59, 0.7); 
+            --surface-solid: #1e293b;
+            --surface-hover: rgba(51, 65, 85, 0.8);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --paid: rgba(16, 185, 129, 0.15); 
+            --paid-border: rgba(16, 185, 129, 0.3);
+            --unpaid: rgba(244, 63, 94, 0.15); 
+            --unpaid-border: rgba(244, 63, 94, 0.3);
+            --border: rgba(255, 255, 255, 0.1);
+            --gold: #fbbf24;
         }
         
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 0; 
+            min-height: 100vh;
+        }
+        
+        /* Kastam Skrolbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: var(--surface-hover); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* Login Skrin */
+        #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(10px); }
+        .login-box { background: var(--surface); backdrop-filter: blur(20px); padding: 40px; border-radius: 24px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); width: 320px; border: 1px solid var(--border); }
+        .login-box h3 { color: var(--text-main); margin-top: 0; letter-spacing: 2px; font-weight: 600; font-size: 22px; margin-bottom: 25px;}
+        .login-box input { width: 100%; padding: 15px; margin-bottom: 25px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 12px; text-align: center; font-size: 20px; font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s; box-sizing: border-box;}
+        .login-box input:focus { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); background: rgba(0,0,0,0.4); }
+        .login-box button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; box-shadow: 0 4px 15px var(--primary-glow); }
+        .login-box button:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+        /* Mukhya Ep Kantenar */
+        #main-app { display: none; padding: 25px; max-width: 1400px; margin: 0 auto; box-sizing: border-box; }
+        
+        /* Hedar ane Aikon */
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
+        .app-header h2 { margin: 0; font-size: 26px; font-weight: 600; color: white; display: flex; align-items: center; gap: 12px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .app-header h2 span { background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-actions { display: flex; gap: 15px; }
+        .icon-btn { background: var(--surface); border: 1px solid var(--border); backdrop-filter: blur(10px); color: var(--text-main); width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .icon-btn svg { width: 22px; height: 22px; }
+        .icon-btn:hover { background: var(--surface-hover); transform: translateY(-3px); }
+        .icon-btn.pdf-btn:hover { border-color: #ef4444; color: #fca5a5; box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2); }
+        .icon-btn.logout-btn:hover { border-color: var(--text-muted); color: white; box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1); }
+
+        /* Premium Deshbord Ankada */
+        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 30px; }
+        .stat-card { background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 24px; padding: 25px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--primary), #8b5cf6); }
+        .stat-card.gold-accent::before { background: linear-gradient(90deg, var(--gold), #f59e0b); }
+        .stat-card.emerald-accent::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .stat-card.rose-accent::before { background: linear-gradient(90deg, #f43f5e, #e11d48); }
+        
+        .stat-title { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;}
+        .stat-value { font-size: 38px; font-weight: 700; color: white; letter-spacing: 1px; }
+        .stat-value.gold-text { color: var(--gold); text-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+        .stat-value.emerald-text { color: #10b981; text-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+        .stat-value.rose-text { color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.3); }
+
+        /* Sarch Bar */
+        .search-container { margin-bottom: 25px; position: relative; }
+        .search-container svg { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 20px; height: 20px; }
+        .search-container input { width: 100%; padding: 18px 20px 18px 55px; background: var(--surface); border: 1px solid var(--border); color: white; border-radius: 16px; font-size: 16px; font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.1); box-sizing: border-box; backdrop-filter: blur(10px); }
+        .search-container input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); background: var(--surface-solid); }
+        .search-container input::placeholder { color: var(--text-muted); }
+
+        /* Tebal Vistar */
+        .table-wrapper { background: var(--surface); backdrop-filter: blur(16px); border-radius: 20px; border: 1px solid var(--border); overflow-x: auto; box-shadow: 0 15px 35px rgba(0,0,0,0.2); padding: 1px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 1000px; }
+        th, td { padding: 16px 10px; text-align: center; font-size: 14px; border-bottom: 1px solid var(--border); }
+        th { background: rgba(15, 23, 42, 0.6); color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 1.5px; font-size: 12px; position: sticky; top: 0; z-index: 10; padding: 20px 10px; }
+        td:first-child, th:first-child { border-top-left-radius: 19px; }
+        td:last-child, th:last-child { border-top-right-radius: 19px; }
+        tr:last-child td { border-bottom: none; }
+        
+        .row-paid { background: var(--paid); }
+        .row-paid td { border-bottom-color: var(--paid-border); }
+        .row-unpaid { background: var(--unpaid); }
+        .row-unpaid td { border-bottom-color: var(--unpaid-border); }
+        
+        input.t-in { width: 95%; padding: 10px; border: 1px solid transparent; border-radius: 8px; text-align: center; font-size: 14px; background: rgba(0,0,0,0.2); color: white; font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s; box-sizing: border-box; }
+        input.t-in:hover { background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.1); }
+        input.t-in:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); box-shadow: 0 0 10px var(--primary-glow); }
+        .sn-cell { font-weight: 700; color: #f87171; font-size: 15px; }
+        
+        /* Aadhunik Chekboks */
+        input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 24px; height: 24px; background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; position: relative; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        input[type="checkbox"]:hover { border-color: var(--text-muted); }
+        input[type="checkbox"]:checked { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 12px var(--primary-glow); }
+        input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 7px; top: 3px; width: 6px; height: 11px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+        /* Niyantrano */
+        .controls { display: flex; gap: 15px; justify-content: center; margin-top: 35px; flex-wrap: wrap; }
+        .btn { padding: 14px 28px; border: none; border-radius: 14px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif; color: white; font-size: 15px; transition: 0.3s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn:hover { transform: translateY(-3px); filter: brightness(1.15); }
+        .btn:active { transform: translateY(0); }
+        .btn-month { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-month-remove { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        .btn-reset { background: linear-gradient(135deg, #64748b, #475569); }
+
+        /* Mobail Pratibhav */
+        @media (max-width: 768px) {
+            #main-app { padding: 15px; }
+            .dashboard { grid-template-columns: 1fr; gap: 15px; }
+            .stat-card { padding: 20px; border-radius: 16px; }
+            .stat-value { font-size: 32px; }
+            .app-header h2 { font-size: 20px; }
+            .icon-btn { width: 42px; height: 42px; border-radius: 10px; }
+            .controls { flex-direction: column; }
+            .btn { justify-content: center; padding: 16px; border-radius: 12px; }
+            .swipe-hint { display: block; text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 15px; font-weight: 500; }
+            .search-container input { padding: 16px 20px 16px 50px; font-size: 15px; }
+        }
         @media (min-width: 769px) { .swipe-hint { display: none; } }
 
-        /* ========================================= */
-        /* PDF PRINT MODE STYLING */
-        /* ========================================= */
-        .pdf-mode { padding: 20px 10px; background: white; }
-        .pdf-mode .top-bar, .pdf-mode .controls, .pdf-mode .swipe-hint { display: none !important; } 
-        .pdf-mode h2 { color: black !important; text-transform: uppercase; text-align: center; margin-bottom: 5px; font-size: 22px; }
-        .pdf-mode .summary-box { background: white !important; color: black !important; border: 2px solid black; padding: 10px; box-shadow: none; border-radius: 0; margin-bottom: 15px; font-size: 14px; flex-direction: row !important; }
-        .pdf-mode table { border: 2px solid black !important; min-width: 100%; }
-        .pdf-mode th { background: white !important; color: black !important; border: 1.5px solid black !important; font-size: 12px; padding: 6px; }
-        .pdf-mode td { border: 1px solid black !important; color: black !important; background: white !important; padding: 4px 2px; }
-        .pdf-mode tr { page-break-inside: avoid; } 
-        .pdf-mode .sn-cell { color: black !important; font-size: 12px; }
-        .pdf-mode input.t-in { border: none !important; background: transparent !important; color: black !important; font-weight: bold; font-size: 12px; width: 100%; outline: none; box-shadow: none; }
-        .pdf-mode .pdf-tick::after { content: '✔'; font-weight: bold; font-size: 14px; color: black; display: block; }
+        /* PDF Print Mod Stail - Premium look ane crop thavanu atkave chhe */
+        .pdf-mode { 
+            padding: 0 !important; 
+            background: #ffffff !important; 
+            color: #000 !important; 
+            width: 100% !important; 
+            max-width: none !important; 
+            margin: 0 !important;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
+        .pdf-mode::before, .pdf-mode::after { display: none !important; }
+        .pdf-mode .search-container, .pdf-mode .controls, .pdf-mode .swipe-hint { display: none !important; }
+        
+        /* Header in PDF */
+        .pdf-mode .app-header { display: flex !important; justify-content: center !important; margin-bottom: 20px !important; border-bottom: 2px solid #1e293b !important; padding-bottom: 15px !important; }
+        .pdf-mode .header-actions { display: none !important; }
+        .pdf-mode .app-header h2 { color: #0f172a !important; text-shadow: none !important; font-size: 26px !important; margin: 0; width: 100%; text-align: center; font-weight: 700; letter-spacing: 1px;}
+        .pdf-mode .app-header h2 span { background: none !important; -webkit-text-fill-color: #0f172a !important; }
+        .pdf-mode .app-header svg { display: none !important; } 
+        
+        /* Dashboard Cards in PDF */
+        .pdf-mode .dashboard { display: flex !important; justify-content: space-between !important; gap: 15px; margin-bottom: 25px; page-break-inside: avoid; }
+        .pdf-mode .stat-card { background: #f8fafc !important; border: 1.5px solid #cbd5e1 !important; box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important; padding: 12px 10px !important; border-radius: 12px !important; backdrop-filter: none; flex: 1; text-align: center; }
+        .pdf-mode .stat-card::before { display: none; }
+        .pdf-mode .stat-title { color: #64748b !important; font-size: 10px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .pdf-mode .stat-title svg { display: none !important; }
+        .pdf-mode .stat-value { color: #0f172a !important; text-shadow: none !important; font-size: 20px !important; font-weight: 700; }
+        
+        /* Professional Table Fixes for PDF - Strong clear box layout */
+        .pdf-mode .table-wrapper { border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; background: transparent !important; backdrop-filter: none; overflow: hidden !important; width: 100% !important; margin: 0 auto !important; }
+        .pdf-mode table { border-collapse: collapse !important; width: 100% !important; border: 2px solid #1e293b !important; table-layout: fixed !important; }
+        .pdf-mode th, .pdf-mode td { border: 1px solid #1e293b !important; padding: 10px 4px !important; color: #0f172a !important; font-size: 10px !important; text-align: center; word-wrap: break-word; vertical-align: middle; height: 30px !important; }
+        .pdf-mode th { background-color: #f1f5f9 !important; color: #0f172a !important; font-weight: 800 !important; padding: 12px 4px !important; text-transform: uppercase; font-size: 10px !important; letter-spacing: 0.5px;}
+        
+        /* Force Column Widths in PERCENTAGE to fix the crop and "Name" space issue perfectly */
+        .pdf-mode th:nth-child(1) { width: 4% !important; }  
+        .pdf-mode th:nth-child(2) { width: 4% !important; }  
+        .pdf-mode th:nth-child(3) { width: 10% !important; }  
+        .pdf-mode th:nth-child(4), .pdf-mode td:nth-child(4) { width: 22% !important; text-align: left !important; padding-left: 10px !important; font-weight: 600 !important; color: #0f172a !important;} 
+        .pdf-mode th:nth-child(5) { width: 8% !important; }  
+        /* Remaining 52% is shared equally by the months */
+
+        /* Clean row colors for PDF */
+        .pdf-mode .row-paid { background-color: #f0fdf4 !important; } 
+        .pdf-mode .row-unpaid { background-color: #fff1f2 !important; } 
+        
+        /* PDF specific elements */
+        .pdf-mode input.t-in { border: none !important; background: transparent !important; color: inherit !important; padding: 0; font-weight: inherit; font-size: inherit !important; width: 100%; text-align: inherit; pointer-events: none; }
+        .pdf-mode .sn-cell { color: #ef4444 !important; font-weight: 700 !important; }
         .pdf-mode input[type="checkbox"] { display: none !important; }
+        .pdf-mode .pdf-tick::after { content: '✔'; font-weight: 900; font-size: 15px; color: #10b981; display: block; text-align: center; }
     </style>
 </head>
 <body>
@@ -96,54 +193,86 @@
 <div id="login-screen">
     <div class="login-box">
         <h3>SECURE LOGIN</h3>
-        <input type="password" id="passInput" placeholder="PIN" onkeydown="if(event.key==='Enter') verify()">
-        <button onclick="verify()">Login</button>
+        <input type="password" id="passInput" placeholder="Enter PIN" onkeydown="if(event.key==='Enter') verify()">
+        <button onclick="verify()">Unlock Dashboard</button>
     </div>
 </div>
 
 <div id="main-app">
     <div class="container" id="printable-area">
         
-        <div class="top-bar">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search Name, Reg No or SN..." oninput="render()">
+        <!-- Premium Header -->
+        <header class="app-header">
+            <h2>
+                <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" color="#3b82f6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Student Fund System</span>
+            </h2>
+            <div class="header-actions">
+                <button class="icon-btn pdf-btn" onclick="generatePDF()" title="Download PDF Report">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </button>
+                <button class="icon-btn logout-btn" onclick="location.reload()" title="Secure Logout">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                </button>
             </div>
-            
-            <div class="quick-add">
-                <label>Quick Add:</label>
-                <input type="text" id="quickAddInput" value="23EE0" 
-                    oninput="if(!this.value.startsWith('23EE0')) this.value='23EE0';" 
-                    onkeydown="handleQuickAdd(event)"
-                    onclick="moveCursorToEnd(this)">
-            </div>
+        </header>
 
-            <button class="btn btn-pdf" onclick="generatePDF()">🖨️ Download PDF</button>
-            <button class="btn btn-logout" onclick="location.reload()">Logout</button>
+        <!-- Premium Dashboard Stats -->
+        <div class="dashboard">
+            <div class="stat-card gold-accent">
+                <span class="stat-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Total Collection
+                </span>
+                <span class="stat-value gold-text">LKR <span id="totalCash">0</span></span>
+            </div>
+            <div class="stat-card emerald-accent">
+                <span class="stat-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Fully Paid
+                </span>
+                <span class="stat-value emerald-text" id="totalStudents">0</span>
+            </div>
+            <div class="stat-card rose-accent">
+                <span class="stat-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Pending
+                </span>
+                <span class="stat-value rose-text" id="pendingStudents">0</span>
+            </div>
         </div>
 
-        <h2 style="text-align:center; color:var(--primary); margin:0 0 10px 0;" id="reportTitle">Student Payment Tracker</h2>
-
-        <div class="summary-box" id="reportSummary">
-            <div>Total Fully Paid Students: <span id="totalStudents">0</span></div>
-            <div>Total Collection: LKR <span id="totalCash">0</span></div>
+        <!-- Search Bar -->
+        <div class="search-container">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="searchInput" placeholder="Search by Name, Reg No or SN..." oninput="render()">
         </div>
 
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr id="headerRow">
-                        <th style="width:40px">No.</th><th style="width:40px">SN</th><th style="width:130px">Reg No.</th><th>Name</th><th style="width:80px">Amount</th>
+                        <th style="width:40px">No.</th><th style="width:45px">SN</th><th style="width:110px">Reg No.</th><th>Full Name</th><th style="width:80px">Amount</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
-        <span class="swipe-hint">👉 Swipe table left/right to see months</span>
+        <span class="swipe-hint">👉 Swipe table left/right to view months</span>
 
         <div class="controls">
-            <button class="btn btn-month" onclick="addNewMonth()">+ Add Month</button>
-            <button class="btn btn-month-remove" onclick="removeLastMonth()">- Remove Month</button>
-            <button class="btn btn-reset" onclick="secureReset()">Reset All Data</button>
+            <button class="btn btn-month" onclick="addNewMonth()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                Add Month
+            </button>
+            <button class="btn btn-month-remove" onclick="removeLastMonth()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"></path></svg>
+                Remove Month
+            </button>
+            <button class="btn btn-reset" onclick="secureReset()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Reset System
+            </button>
         </div>
     </div>
 </div>
@@ -152,43 +281,46 @@
     const PASS = "2003";
     const API_URL = "https://script.google.com/macros/s/AKfycbx7OegRBnSYlprMznKNfLAddVM9obgbznreqCOwFIS8j4X3LfdOH8i-qsVeMIm72sI/exec";
     
+    /* English Months */
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     const db = {
-        "316": "G.A.K.Perera (GL)", "346": "W.A.S.P.Wickramasinghe", "306": "S.K.K.A.U.Madushan", "320": "S.P.K.M.Premasiri",
-        "305": "R.A.Madushan", "268": "K.P.M.D.Darmasiri (GL)", "283": "H.M. A.P.Gunawardana", "293": "H.S.Kalhara",
-        "311": "E.Narmithan", "269": "A .G. A. P. Dayananda", "270": "M.A.A.K Dilshan (GL)", "258": "A.M.G.M Attanayaka",
-        "259": "B.P.G.N.T Balasooriya", "282": "N.D.D.N.S Gunathilake", "348": "P.A.C.P Wijesinghe", "285": "W.P.M.T.Gunarathna (GL)",
-        "338": "T.S.Subasinghe", "287": "H.M.C.M. Herath", "294": "Y.G.T.N Kalhara", "301": "G.V.P.Lakshan",
-        "289": "H.P.S.N.Hewapathirana", "290": "D.R.L.Ilangarathna", "291": "K.W.N.N.Jayashantha (GL)", "266": "W.G.M.Chathuranga",
-        "272": "P.H.G.P.N.Dissanayaka", "254": "T.A.M.I.B.Adikaram", "265": "M.G.D.Chandrawansa", "280": "U.M.S.N.Gunarathna (GL)",
-        "281": "H.K.E.P.Gunarathna", "253": "A.M.U.P.D.Adasuriya", "277": "S.A.M.R.Fernando", "251": "A.A.D.D.N.Abeydeera",
-        "276": "N.T.M.Fernando (GL)", "267": "K.A.D.Dhananjaya", "264": "P.P.Bhashana", "256": "S.M.S.Anagiyadda",
-        "257": "V.P.V.Ariyarathna", "262": "K.W.A.M.Bandara (GL)", "260": "N.G.C.D.Balasooriya", "273": "D.M.G.N.N.Dissanayake",
-        "274": "D.M.H.K.Dissanayake", "331": "K. J. Sabith Hussain (GL)", "255": "M U.M. Amhar", "275": "E.M. J.W.Edirisooriya",
-        "286": "B.M.Hassan", "310": "W.M.P.L.Nanayakkara (GL)", "309": "M.M.K.Munasinghe", "330": "S.M.S.N.Rathnayake",
-        "340": "H.D.O.Tharinda", "298": "K.W.D.C.I.Koswaththa", "345": "S.U.A.Wikramanayake (GL)", "326": "W.N.Rasintha",
-        "335": "J.K.T.P.Sarvajith", "327": "R.M.K.V.Rathnayake", "332": "S.D.S.W.Samarathunga", "339": "S.A.H.K.Suduwella (GL)",
-        "302": "K.V.K.Madhubhath", "336": "M.K.D.J.Savinda", "337": "S.M.P.T.Subasinghe", "344": "G.H.T.Wickramage",
-        "317": "H.S.T.Perera (GL)", "329": "R.M.P.T.Rathnayake", "292": "M.K.P.N.Jayaweera", "347": "T.G.B.A.Wijerathne",
-        "312": "A.H.T.Navindu (GL)", "325": "R.A.R.H.Ranasinghe", "343": "W.M.S.S.Weerakoon", "324": "A.G.N.D.Ranasinghe",
-        "297": "S.V.L.Kodithuwakku (GL)", "278": "W.I.U.Fernando", "296": "K.T.R.Kalubowila", "295": "K.A.N.K.Kalurachchi",
-        "299": "K.H.Kulathunga", "322": "E.A.L.D.Priyashantha (GL)", "307": "M.K.Malshan", "314": "I.W.R.Pasindu",
-        "323": "H.K.S.Pushpakumara", "341": "U.A.I.H.Uggalla", "304": "R.T.A.N.Madhusanka (GL)", "313": "I.K.T.Nishshanka",
-        "319": "G.P.S.Premakumara", "349": "R.D.M.H.Wijethilake", "350": "Y.S.D.Yodhasinghe", "263": "R.M.Y.R.Bandara (GL)",
-        "284": "S.G.K.B.Gunawardhane", "261": "A.I.Bandara", "328": "R.M.N.K Rathnayake", "318": "T.W.K.D. Perera (GL)",
-        "321": "M.V.A. Priyamal", "288": "H.M.N.L. Herath", "315": "V.A.S.K. Peiris"
+        "251": "A.A.D.D.N.Abeydeera", "253": "A.M.U.P.D.Adasuriya", "254": "T.A.M.I.B.Adikaram", "255": "M U.M. Amhar",
+        "256": "S.M.S.Anagiyadda", "257": "V.P.V.Ariyarathna", "258": "A.M.G.M Attanayaka", "259": "B.P.G.N.T Balasooriya",
+        "260": "N.G.C.D.Balasooriya", "261": "A.I.Bandara", "262": "K.W.A.M.Bandara (GL)", "263": "R.M.Y.R.Bandara (GL)",
+        "264": "P.P.Bhashana", "265": "M.G.D.Chandrawansa", "266": "W.G.M.Chathuranga", "267": "K.A.D.Dhananjaya",
+        "268": "K.P.M.D.Darmasiri (GL)", "269": "A .G. A. P. Dayananda", "270": "M.A.A.K Dilshan (GL)", "272": "P.H.G.P.N.Dissanayaka",
+        "273": "D.M.G.N.N.Dissanayake", "274": "D.M.H.K.Dissanayake", "275": "E.M. J.W.Edirisooriya", "276": "N.T.M.Fernando (GL)",
+        "277": "S.A.M.R.Fernando", "278": "W.I.U.Fernando", "280": "U.M.S.N.Gunarathna (GL)", "281": "H.K.E.P.Gunarathna",
+        "282": "N.D.D.N.S Gunathilake", "283": "H.M. A.P.Gunawardana", "284": "S.G.K.B.Gunawardhane", "285": "W.P.M.T.Gunarathna (GL)",
+        "286": "B.M.Hassan", "287": "H.M.C.M. Herath", "288": "H.M.N.L. Herath", "289": "H.P.S.N.Hewapathirana",
+        "290": "D.R.L.Ilangarathna", "291": "K.W.N.N.Jayashantha (GL)", "292": "M.K.P.N.Jayaweera", "293": "H.S.Kalhara",
+        "294": "Y.G.T.N Kalhara", "295": "K.A.N.K.Kalurachchi", "296": "K.T.R.Kalubowila", "297": "S.V.L.Kodithuwakku (GL)",
+        "298": "K.W.D.C.I.Koswaththa", "299": "K.H.Kulathunga", "301": "G.V.P.Lakshan", "302": "K.V.K.Madhubhath",
+        "304": "R.T.A.N.Madhusanka (GL)", "305": "R.A.Madushan", "306": "S.K.K.A.U.Madushan", "307": "M.K.Malshan",
+        "309": "M.M.K.Munasinghe", "310": "W.M.P.L.Nanayakkara (GL)", "311": "E.Narmithan", "312": "A.H.T.Navindu (GL)",
+        "313": "I.K.T.Nishshanka", "314": "I.W.R.Pasindu", "315": "V.A.S.K. Peiris", "316": "G.A.K.Perera (GL)",
+        "317": "H.S.T.Perera (GL)", "318": "T.W.K.D. Perera (GL)", "319": "G.P.S.Premakumara", "320": "S.P.K.M.Premasiri",
+        "321": "M.V.A. Priyamal", "322": "E.A.L.D.Priyashantha (GL)", "323": "H.K.S.Pushpakumara", "324": "A.G.N.D.Ranasinghe",
+        "325": "R.A.R.H.Ranasinghe", "326": "W.N.Rasintha", "327": "R.M.K.V.Rathnayake", "328": "R.M.N.K Rathnayake",
+        "329": "R.M.P.T.Rathnayake", "330": "S.M.S.N.Rathnayake", "331": "K. J. Sabith Hussain (GL)", "332": "S.D.S.W.Samarathunga",
+        "335": "J.K.T.P.Sarvajith", "336": "M.K.D.J.Savinda", "337": "S.M.P.T.Subasinghe", "338": "T.S.Subasinghe",
+        "339": "S.A.H.K.Suduwella (GL)", "340": "H.D.O.Tharinda", "341": "U.A.I.H.Uggalla", "343": "W.M.S.S.Weerakoon",
+        "344": "G.H.T.Wickramage", "345": "S.U.A.Wikramanayake (GL)", "346": "W.A.S.P.Wickramasinghe", "347": "T.G.B.A.Wijerathne",
+        "348": "P.A.C.P Wijesinghe", "349": "R.D.M.H.Wijethilake", "350": "Y.S.D.Yodhasinghe"
     };
 
     let students = [];
     let months = [];
+    let cloudSaveTimeout;
 
+    // Login chakasani
     function verify() {
         if (document.getElementById('passInput').value === PASS) {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
             
-            document.getElementById('tableBody').innerHTML = `<tr><td colspan="100%" style="padding:40px; font-size:16px; color:#1a73e8; font-weight:bold;">☁️ Loading Data...</td></tr>`;
+            document.getElementById('tableBody').innerHTML = `<tr><td colspan="100%" style="padding:50px; font-size:18px; color:var(--primary); font-weight:600; text-align:center;">☁️ Syncing Cloud Data...</td></tr>`;
 
             fetch(API_URL)
                 .then(res => res.json())
@@ -201,129 +333,179 @@
                         if (localS.length > 0) {
                             students = localS;
                             months = JSON.parse(localStorage.getItem('m_v_cloud_backup')) || ["March"];
-                            save(); 
-                        } else { addNewRow(); } // අවම වශයෙන් එක් ළමයෙක් හෝ මුලින්ම පෙන්වීමට
+                            debounceSave(); 
+                        } else { 
+                            months = ["March"];
+                            Object.keys(db).sort((a,b) => parseInt(a) - parseInt(b)).forEach(key => {
+                                students.push({ reg: "23EE0" + key, sn: parseInt(key) - 250, name: db[key], amount: 100, payments: new Array(months.length).fill(false) });
+                            });
+                            debounceSave();
+                        }
                     }
                     render();
-                    setTimeout(() => { document.getElementById('quickAddInput').focus(); moveCursorToEnd(document.getElementById('quickAddInput')); }, 100);
                 })
                 .catch(err => {
                     students = JSON.parse(localStorage.getItem('s_v_cloud_backup')) || [];
                     months = JSON.parse(localStorage.getItem('m_v_cloud_backup')) || ["March"];
-                    if(students.length === 0) addNewRow();
+                    if(students.length === 0) {
+                        Object.keys(db).sort((a,b) => parseInt(a) - parseInt(b)).forEach(key => {
+                            students.push({ reg: "23EE0" + key, sn: parseInt(key) - 250, name: db[key], amount: 100, payments: new Array(months.length).fill(false) });
+                        });
+                        debounceSave();
+                    }
                     render();
                 });
-        } else { alert("Incorrect PIN!"); }
+        } else { alert("Incorrect PIN! Please try again."); }
     }
 
-    function save() { 
+    // Lag/delay thegeduhakalu debounce save
+    function debounceSave() { 
         localStorage.setItem('s_v_cloud_backup', JSON.stringify(students)); 
         localStorage.setItem('m_v_cloud_backup', JSON.stringify(months)); 
-        fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ students: students, months: months }) }).catch(e=>{});
+        clearTimeout(cloudSaveTimeout);
+        cloudSaveTimeout = setTimeout(() => {
+            fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ students: students, months: months }) }).catch(e=>{});
+        }, 1500);
     }
 
-    function moveCursorToEnd(el) { if (typeof el.selectionStart == "number") { el.selectionStart = el.selectionEnd = el.value.length; } }
-
-    function handleQuickAdd(e) {
-        let el = e.target;
-        if (e.key === "Enter") {
-            let val = el.value; let suffix = val.replace("23EE0", "");
-            if (suffix.length === 3) {
-                if (students.some(s => s.reg === val)) { alert("This Registration Number has already been added!"); el.value = "23EE0"; moveCursorToEnd(el); return; }
-                let sn = parseInt(suffix) - 250; let name = db[suffix] ? db[suffix] : "Student Not Found";
-                let emptyIndex = students.findIndex(s => s.reg === "23EE0" || s.reg === "");
-                if (emptyIndex !== -1) { students[emptyIndex].reg = val; students[emptyIndex].sn = sn; students[emptyIndex].name = name; } 
-                else { students.push({ reg: val, sn: sn, name: name, amount: 100, payments: new Array(months.length).fill(false) }); }
-                save(); document.getElementById('searchInput').value = ""; render(); el.value = "23EE0"; moveCursorToEnd(el);
-                setTimeout(() => { const rows = document.querySelectorAll('#tableBody tr'); let targetRow = emptyIndex !== -1 ? emptyIndex : rows.length - 1; if (rows[targetRow]) rows[targetRow].querySelector('input[type="checkbox"]').focus(); }, 50);
-            } else { alert("Please enter a valid 3-digit number!"); }
-        }
+    // Tikaa mbayliima (Update stats)
+    function updateStats() {
+        let cash = 0, paid = 0;
+        students.forEach(s => {
+            let isPaid = s.payments.length > 0 && s.payments.every(p => p === true); 
+            if(isPaid) paid++; 
+            s.payments.forEach(p => { if(p) cash += s.amount; });
+        });
+        document.getElementById('totalStudents').innerText = paid; 
+        document.getElementById('pendingStudents').innerText = students.length - paid;
+        document.getElementById('totalCash').innerText = cash.toLocaleString();
     }
 
+    // UI render karo
     function render() {
+        students.sort((a, b) => {
+            let snA = parseInt(a.sn); if(isNaN(snA)) snA = 9999;
+            let snB = parseInt(b.sn); if(isNaN(snB)) snB = 9999;
+            return snA - snB;
+        });
+
         const query = document.getElementById('searchInput').value.toLowerCase();
         const header = document.getElementById('headerRow');
-        header.innerHTML = `<th style="width:40px">No.</th><th style="width:40px">SN</th><th style="width:130px">Reg No.</th><th>Name</th><th style="width:80px">Amount</th>`;
-        months.forEach(m => header.innerHTML += `<th style="width:80px">${m}</th>`);
+        header.innerHTML = `<th style="width:40px">No.</th><th style="width:45px">SN</th><th style="width:110px">Reg No.</th><th>Full Name</th><th style="width:80px">Amount</th>`;
+        months.forEach(m => header.innerHTML += `<th class="month-col" style="width:70px">${m}</th>`);
 
-        const tbody = document.getElementById('tableBody'); tbody.innerHTML = ""; let cash = 0, paid = 0;
+        const tbody = document.getElementById('tableBody'); tbody.innerHTML = ""; 
         students.forEach((s, idx) => {
             if (s.name.toLowerCase().includes(query) || s.reg.toLowerCase().includes(query) || (s.sn && s.sn.toString().includes(query))) {
-                
                 let isPaid = s.payments.every(p => p === true); 
-                if(isPaid) paid++; 
-                s.payments.forEach(p => { if(p) cash += s.amount; });
-                
                 const row = document.createElement('tr'); row.className = isPaid ? "row-paid" : "row-unpaid";
-                row.innerHTML = `<td>${idx + 1}</td><td class="sn-cell">${s.sn || ''}</td>
-                    <td><input type="text" class="t-in r-in" value="${s.reg}" oninput="handleReg(${idx}, this.value)" onkeydown="nav(event, ${idx}, 'reg')"></td>
-                    <td><input type="text" class="t-in n-in" value="${s.name}" oninput="update(${idx}, 'name', this.value)" onkeydown="nav(event, ${idx}, 'name')"></td>
-                    <td><input type="number" class="t-in a-in" value="${s.amount}" oninput="update(${idx}, 'amount', this.value)" onkeydown="nav(event, ${idx}, 'amt')"></td>`;
-                months.forEach((m, mIdx) => { const tick = s.payments[mIdx] ? 'pdf-tick' : ''; row.innerHTML += `<td class="${tick}"><input type="checkbox" ${s.payments[mIdx] ? 'checked' : ''} onclick="toggle(${idx}, ${mIdx})"></td>`; });
+                
+                // Typing mādidaaga purna table re-render aagabahudu, adakke "oninput" badalu smooth updates
+                let rowHtml = `<td>${idx + 1}</td><td class="sn-cell">${s.sn || ''}</td>
+                    <td><input type="text" class="t-in r-in" value="${s.reg}" oninput="handleReg(${idx}, this.value, this)"></td>
+                    <td><input type="text" class="t-in n-in" value="${s.name}" oninput="update(${idx}, 'name', this.value)"></td>
+                    <td><input type="number" class="t-in a-in" value="${s.amount}" oninput="update(${idx}, 'amount', this.value)"></td>`;
+                
+                months.forEach((m, mIdx) => { 
+                    const tick = s.payments[mIdx] ? 'pdf-tick' : ''; 
+                    rowHtml += `<td class="${tick}"><input type="checkbox" ${s.payments[mIdx] ? 'checked' : ''} onchange="toggle(${idx}, ${mIdx}, this)"></td>`; 
+                });
+                
+                row.innerHTML = rowHtml;
                 tbody.appendChild(row);
             }
         });
-        document.getElementById('totalStudents').innerText = paid; document.getElementById('totalCash').innerText = cash.toLocaleString();
+        updateStats();
     }
 
-    function handleReg(idx, val) {
-        if (!val.startsWith("23EE0")) val = "23EE0";
-        if (students.some((s, i) => i !== idx && s.reg === val && val !== "23EE0")) { alert("This Registration Number has already been added!"); students[idx].reg = "23EE0"; students[idx].sn = ""; students[idx].name = ""; save(); render(); return; }
-        students[idx].reg = val; let suffix = val.replace("23EE0", "");
-        if (suffix.length === 3) { students[idx].sn = parseInt(suffix) - 250; students[idx].name = db[suffix] ? db[suffix] : "Student Not Found"; save(); render(); const rows = document.querySelectorAll('#tableBody tr'); if(rows[idx]) rows[idx].querySelector('input[type="checkbox"]').focus(); } 
-        else { students[idx].sn = ""; save(); document.getElementById('totalStudents').innerText = paid; document.getElementById('totalCash').innerText = cash.toLocaleString(); }
+    // Name/Amount Smooth Update (Lag aaguvudilla)
+    function update(idx, f, v) { 
+        students[idx][f] = (f==='amount') ? parseInt(v)||0 : v; 
+        if(f === 'amount') updateStats();
+        debounceSave(); 
     }
 
-    function update(idx, f, v) { students[idx][f] = (f==='amount')?parseInt(v)||0:v; save(); render(); }
-    function toggle(sIdx, mIdx) { students[sIdx].payments[mIdx] = !students[sIdx].payments[mIdx]; save(); render(); }
-
-    // මෙම Function එක Quick Add සහ මුලින් පටන් ගන්නා විට පමණක් අවශ්‍ය වේ. (Button එක අයින් කර ඇත)
-    function addNewRow() { students.push({ reg: "23EE0", sn: "", name: "", amount: 100, payments: new Array(months.length).fill(false) }); save(); render(); setTimeout(() => { const regs = document.querySelectorAll('.r-in'); const el = regs[regs.length - 1]; el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 50); }
+    // Checkbox Smooth Toggle
+    function toggle(sIdx, mIdx, el) { 
+        students[sIdx].payments[mIdx] = el.checked; 
+        
+        let row = el.closest('tr');
+        let isPaid = students[sIdx].payments.every(p => p === true);
+        row.className = isPaid ? "row-paid" : "row-unpaid";
+        
+        let td = el.closest('td');
+        if(el.checked) td.classList.add('pdf-tick'); 
+        else td.classList.remove('pdf-tick');
+        
+        updateStats(); 
+        debounceSave(); 
+    }
     
-    function nav(e, idx, f) { if (e.key === "Enter") { const row = document.querySelectorAll('#tableBody tr')[idx]; if (f === 'reg') row.querySelector('input[type="checkbox"]').focus(); else addNewRow(); } }
+    // Reg No Smooth Update
+    function handleReg(idx, val, el) {
+        if (!val.startsWith("23EE0")) val = "23EE0";
+        students[idx].reg = val; 
+        
+        let suffix = val.replace("23EE0", "");
+        let row = el.closest('tr');
+        
+        if (suffix.length === 3) { 
+            students[idx].sn = parseInt(suffix) - 250; 
+            students[idx].name = db[suffix] ? db[suffix] : "Student Not Found"; 
+            row.querySelector('.sn-cell').innerText = students[idx].sn;
+            row.querySelector('.n-in').value = students[idx].name;
+        } else { 
+            students[idx].sn = ""; 
+            row.querySelector('.sn-cell').innerText = "";
+        }
+        
+        debounceSave(); 
+    }
     
     function addNewMonth() { 
         let last = months[months.length-1]; 
         months.push(monthNames[(monthNames.indexOf(last)+1)%12]); 
         students.forEach(s => s.payments.push(false)); 
-        save(); 
+        debounceSave(); 
         render(); 
     }
 
-    // අලුතින් එකතු කළ Remove Month Function එක
     function removeLastMonth() {
         if (months.length <= 1) {
-            alert("ඔබට අවම වශයෙන් එක් මාසයක් හෝ තිබිය යුතුය! (Cannot remove the base month)");
+            alert("You must maintain at least one base month!");
             return;
         }
-        if (confirm("ඔබට විශ්වාසද අවසන් වරට එකතු කළ මාසය මකා දැමිය යුතු බව? (Are you sure you want to remove the last month?)")) {
-            months.pop(); // අන්තිම මාසේ නම අයින් කරනවා
-            students.forEach(s => s.payments.pop()); // ළමයින්ගේ අන්තිම මාසේ tick එක අයින් කරනවා
-            save(); 
+        if (confirm("Are you sure you want to permanently remove the last added month?")) {
+            months.pop(); 
+            students.forEach(s => s.payments.pop()); 
+            debounceSave(); 
             render(); 
         }
     }
     
-    function secureReset() { if (prompt("PIN:") === PASS) { students = []; months = ["March"]; save(); localStorage.clear(); location.reload(); } }
+    function secureReset() { if (prompt("Enter Developer PIN to Reset:") === PASS) { students = []; months = ["March"]; localStorage.clear(); debounceSave(); location.reload(); } }
 
+    /* PDF Print Function (PDF Print Fankshan) */
     function generatePDF() {
         const el = document.getElementById('printable-area');
         el.classList.add('pdf-mode'); 
         
-        let today = new Date();
-        let dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-        
-        var opt = {
-            margin:       [10, 10, 10, 10], 
-            filename:     'Payment_Report_' + dateString + '.pdf',
-            image:        { type: 'jpeg', quality: 1 },
-            html2canvas:  { scale: 2, useCORS: true }, 
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' } 
-        };
+        setTimeout(() => {
+            let today = new Date();
+            let dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
-        html2pdf().set(opt).from(el).save().then(() => {
-            el.classList.remove('pdf-mode'); 
-        });
+            var opt = {
+                margin:       [10, 10, 10, 10], 
+                filename:     'Student_Fund_Report_' + dateString + '.pdf',
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: 2, useCORS: true }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' } 
+            };
+
+            html2pdf().set(opt).from(el).save().then(() => {
+                el.classList.remove('pdf-mode'); 
+            });
+        }, 300);
     }
 </script>
 </body>
